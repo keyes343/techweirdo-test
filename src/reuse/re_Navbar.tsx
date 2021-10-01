@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { h, r, e, s, init } from './incoming';
 import { useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -11,6 +11,7 @@ export interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = (p) => {
     const history = useHistory();
     const state_user = useContext(r.user.StateContext);
+    const state_med = useContext(r.med.StateContext);
     const state_settings = useContext(r.settings.StateContext);
 
     return (
@@ -23,6 +24,8 @@ export const Navbar: React.FC<NavbarProps> = (p) => {
                     // state_user,
                     // state_forms,
                     state_settings,
+                    state_user,
+                    state_med,
                     // state_panel,
                     // hook_forms,
                     // hook_panel,
@@ -87,7 +90,7 @@ const MyProfileButton = () => {
             relative
         >
             {/* <img src={media.personIcon} alt="person icon" /> */}
-            <s.nav.MyProfileButton>My Profile</s.nav.MyProfileButton>
+            <s.nav.MyProfileButton>Settings</s.nav.MyProfileButton>
             {/* ABSOLUTE - popup for user profile */}
             <s.nav.Popup
                 absolute
@@ -111,36 +114,49 @@ const MyProfileButton = () => {
 };
 
 const MenuOptions = (p: { toggleProfile: () => void }) => {
-    const state_user = useContext(r.user.StateContext);
     const history = useHistory();
+    const state_user = useContext(r.user.StateContext);
     const dispatch_user = useContext(r.user.DispatchContext)!;
+    const dispatch_settings = useContext(r.settings.DispatchContext)!;
+    const hook_user = h.User();
+    // const LOGOUT = async () => {
+    //     const auth = getAuth();
+    //     await auth.signOut();
+    //     dispatch_user({
+    //         type: r.user.act.logout,
+    //         payload: null,
+    //     });
+    // };
 
-    const LOGOUT = async () => {
-        const auth = getAuth();
-        await auth.signOut();
-        dispatch_user({
-            type: r.user.act.logout,
-            payload: null,
-        });
-    };
-
-    const toggle_profile_and_history = (path: string) => {
-        p.toggleProfile();
-        history.push(path);
-    };
+    // const toggle_profile_and_history = (path: string) => {
+    //     p.toggleProfile();
+    //     history.push(path);
+    // };
+    const alterSettings = useCallback((key: '/' | '/see/' | '/admin/') => {
+        // dispatch_settings({
+        //     type: r.settings.act['menu-option'],
+        //     payload: key,
+        // });
+        history.push(key);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const dashboard_list = [
         {
-            title: 'My Dashboard',
-            onClick: () => toggle_profile_and_history(e.links.paths.dashboard_myprofile),
+            title: 'Record new medicine',
+            onClick: () => alterSettings('/'),
         },
         {
-            title: 'Post an ad',
-            onClick: () => toggle_profile_and_history(e.links.paths.uploads),
+            title: 'See my med calendar',
+            onClick: () => alterSettings('/see/'),
+        },
+        {
+            title: 'Admin',
+            onClick: () => alterSettings('/admin/'),
         },
         {
             title: state_user.loggedIn ? 'Log Out' : 'Log In',
-            onClick: () => (state_user.loggedIn ? LOGOUT() : toggle_profile_and_history(e.links.paths.home)),
+            onClick: () => (state_user.loggedIn ? hook_user.LOGOUT() : hook_user.LOGIN()),
         },
     ];
 

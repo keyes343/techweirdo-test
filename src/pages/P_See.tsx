@@ -6,8 +6,8 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = (p) => {
     return (
         <s.Box>
-            <reuse.ent.InputLine />
-            <reuse.ent.Save />
+            <reuse.see.InputLine />
+            {/* <reuse.see.Save /> */}
         </s.Box>
     );
 };

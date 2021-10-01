@@ -21,6 +21,7 @@ export enum act {
     'nudge',
     'loaded',
     'set-typed',
+    'set-date',
 }
 
 export type State = {
@@ -40,6 +41,7 @@ export type State = {
     nudge: string | null;
     loaded: null | number; // for progressbar
     typed: string; // stores any typed value by user
+    // selectedDate: null | Date;
 };
 
 export const initialState: State = {
@@ -58,6 +60,7 @@ export const initialState: State = {
     nudge: null,
     loaded: null,
     typed: '',
+    // selectedDate: null,
 };
 
 export const reducer = (state: State, action: Action) => {
@@ -71,6 +74,9 @@ export const reducer = (state: State, action: Action) => {
         }
     };
     switch (type) {
+        // case act['set-date']:
+        //     newState.selectedDate = payload ?? null;
+        //     break;
         case act['active-div']: // payload preferred
             // console.log({
             //     payload,

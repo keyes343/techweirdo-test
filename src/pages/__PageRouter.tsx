@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useEffect, useContext } from 'react';
 import { HashRouter, Switch, Route, Router } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { r, e, t, reuse, init } from './incoming';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { r, h, t, reuse } from './incoming';
 import * as pages from './index';
 import axios from 'axios';
 
@@ -16,78 +15,29 @@ const PageRouter: React.FC<PageRouterProps> = () => {
     const state_settings = useContext(r.settings.StateContext);
     const dispatch_settings = useContext(r.settings.DispatchContext)!;
 
-    // ACKNOWLEDGE USER in database once user logs in
-    // this is done once every refrest
-    const acknowledgedUser = React.useCallback(async () => {
-        // do not acknowledge user if already acknowledged
-        // or if not logged in yet.
-        if (state_user.acknowledged || !state_user.loggedIn) {
-            return;
-        }
-        const touchpoint = e.links.apis.aws + '/user/acknowledge';
+    const hook_user = h.User();
 
-        // PAYLOAD FOR ACKNOWLEDGING USER
-        const payload = {
-            // email: undefined,
-            email: state_user.email as string,
-            uid: state_user.uid! as string,
-        };
-        // MAKING AXIOS CALL TO VERIFY USER IN MONGOOSE
-        const { status, data } = await axios.post(touchpoint, payload);
-
-        if (status === 200) {
-            dispatch_user({
-                type: r.user.act.acknowledged,
-                payload: data.doc,
-            });
-            // console.log(data);
-        } else if (status === 400) {
-            alert('Some data is missing so the request could not be accepted.');
-        } else {
-            alert('Something went wrong. Please refresh and try loggin in again.');
-        }
-    }, [dispatch_user, state_user.acknowledged, state_user.email, state_user.loggedIn, state_user.uid]);
-
+    // ACKNOWLEDGE USER INTO DATABASE
     useEffect(() => {
-        acknowledgedUser();
-    }, [acknowledgedUser]);
-
-    // AUTO AUTH CHECK FIREBASE
-    // if user is logged into browser, app will update according it to
-    useEffect(() => {
-        const auth = getAuth();
-        // init.firebase_app()
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // console.log({ userExists: user });
-                let { phoneNumber, email } = user;
-                // if user is logged in with OTP
-                if (phoneNumber) {
-                    // phoneNumber = phoneNumber.slice(3);
-                    dispatch_user({
-                        type: r.user.act['loginWith-otp'],
-                        payload: { user },
-                    });
-                } else if (email) {
-                    dispatch_user({
-                        type: r.user.act['loginWith-google'],
-                        payload: { user },
-                    });
-                }
-            }
-        });
-    }, [dispatch_user]);
+        if (!state_user.acknowledged && state_user.loggedIn) {
+            hook_user.acknowledgedUser();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state_user.acknowledged, state_user.loggedIn]);
 
     return (
         <Router history={history}>
             <HashRouter>
-                <Route path={e.links.paths.home}>
+                <Route path={'/'}>
                     <reuse.nav.Navbar />
                 </Route>
-                <Route path={e.links.paths.home}>
+                <Route path={'/'} exact>
                     <pages.Home />
                 </Route>
                 <Switch>
+                    <Route path="/see/" strict>
+                        <pages.See />
+                    </Route>
                     <Route path="/admin/" strict>
                         {/* <Admin /> */}
                     </Route>

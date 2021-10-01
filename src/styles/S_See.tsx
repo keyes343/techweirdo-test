@@ -4,6 +4,10 @@ import { Box, Grid } from './S_Box';
 export const InputLine = styled(Grid)``;
 export const Input = styled(Grid)``;
 export const Label = styled(Box)``;
+export const Text = styled(Box)``;
+export const Pair = styled(Grid)``;
+// export const CardArray = styled(Grid)``;
+export const Card = styled(Grid)``;
 export const BtnWrapper = styled(Grid)<{ count: number }>`
     grid-template-columns: ${(p) => {
         return `repeat(${p.count}, 1fr)`;
@@ -44,6 +48,33 @@ export const ArrayWrapper = styled(Grid)`
                 gap: 0.5rem;
                 ${Btn} {
                 }
+            }
+        }
+    }
+    border: 2px solid blue;
+`;
+export const CardArray = styled(Grid)`
+    gap: 1rem;
+    padding: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    ${Card} {
+        padding: 1rem 2rem;
+        gap: 0.3rem;
+        border: 1px solid grey;
+        border-radius: 5px;
+        ${Pair} {
+            place-items: start center;
+            gap: 1rem;
+            grid-template-columns: 10rem 1fr;
+            ${Label} {
+                border-right: 1px solid red;
+                ${Input} {
+                    input {
+                        height: 100%;
+                    }
+                }
+            }
+            ${Text} {
             }
         }
     }

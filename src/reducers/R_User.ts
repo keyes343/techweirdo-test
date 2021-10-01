@@ -54,9 +54,12 @@ export const reducer = (state: State, action: Action) => {
     const firebase_result = payload as User;
     switch (type) {
         case act['loginWith-google']: // when user selects a subcategory ( new, same, both )
-            newState.email = firebase_result.email ?? null;
-            newState.uid = firebase_result.uid ?? null;
-            newState.loggedIn = firebase_result.uid ? true : false;
+            if (!newState.loggedIn) {
+                console.log({ payload });
+                newState.email = firebase_result.email ?? null;
+                newState.uid = firebase_result.uid ?? null;
+                newState.loggedIn = firebase_result.uid ? true : false;
+            }
             break;
 
         case act.logout:
@@ -69,10 +72,12 @@ export const reducer = (state: State, action: Action) => {
             break;
         case act.acknowledged:
             const load = payload as t.user.UserDocument;
-            // console.log({ load });
-            newState.acknowledged = true;
-            newState.mongoose_id = load._id;
-            newState['email'] = load['email'];
+            if (!newState.acknowledged) {
+                console.log({ load });
+                newState.acknowledged = true;
+                newState.mongoose_id = load._id;
+                newState['email'] = load['email'];
+            }
             break;
         case act['clear-acknowledged']:
             newState.acknowledged = false;
