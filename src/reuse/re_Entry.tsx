@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext, useCallback, useRef, useMemo } from 'react';
-import { h, r, e, s, t, reuse } from './incoming';
-// import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import React, { useContext } from 'react';
+import { h, r, s, t } from './incoming';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -78,24 +77,6 @@ export const InputLine = () => {
                             type: r.med.act['set-state'],
                             payload: {
                                 end: date as Date,
-                            },
-                        });
-                    }}
-                />
-            ),
-        },
-        {
-            label: 'Gap days between doses',
-            action: 'gap',
-            ui: (
-                <input
-                    type="number"
-                    value={state_med.gap ?? ''}
-                    onChange={(e) => {
-                        dispatch_med({
-                            type: r.med.act['set-state'],
-                            payload: {
-                                gap: parseInt(e.currentTarget.value, 10),
                             },
                         });
                     }}

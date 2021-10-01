@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = (p) => {
                     history.push('/');
                 }}
             >
-                TechWeirdo.in
+                <s.Box pd="0.5rem 1rem 0">TechWeirdo</s.Box>
                 {/* <img src={media.companyLogo} alt="" /> */}
             </s.nav.Logo>
 
@@ -149,10 +149,6 @@ const MenuOptions = (p: { toggleProfile: () => void }) => {
         {
             title: 'See my med calendar',
             onClick: () => alterSettings('/see/'),
-        },
-        {
-            title: 'Admin',
-            onClick: () => alterSettings('/admin/'),
         },
         {
             title: state_user.loggedIn ? 'Log Out' : 'Log In',

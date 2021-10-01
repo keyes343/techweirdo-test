@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useContext, useCallback } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { r, e, t } from './incoming';
 import axios from 'axios';
 
@@ -40,8 +40,8 @@ const Med = () => {
             return;
         }
 
-        const { name, quantity, med_type, start, end, time_of_day, meal, gap } = state_med;
-        const check_these: (keyof r.med.State)[] = ['name', 'quantity', 'med_type', 'start', 'end', 'time_of_day', 'meal', 'gap'];
+        const { name, quantity, med_type, start, end, time_of_day, meal } = state_med;
+        const check_these: (keyof r.med.State)[] = ['name', 'quantity', 'med_type', 'start', 'end', 'time_of_day', 'meal'];
 
         let alert_for = '';
         const allow = check_these.every((item) => {
@@ -69,7 +69,6 @@ const Med = () => {
             end,
             time_of_day,
             meal,
-            gap,
             taken: [],
         };
         console.log({ api, payload });

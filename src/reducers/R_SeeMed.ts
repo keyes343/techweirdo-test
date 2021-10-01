@@ -29,7 +29,6 @@ export const initialState: State = {
     med_type: null,
     time_of_day: null,
     meal: null,
-    gap: null,
     taken: null,
 };
 
@@ -45,7 +44,7 @@ export const reducer = (state: State, action: Action) => {
             };
             break;
         case act.reset:
-            const keys: (keyof State)[] = ['end', 'gap', 'meal', 'med_type', 'name', 'owner', 'quantity', 'start', 'time_of_day'];
+            const keys: (keyof State)[] = ['end', 'meal', 'med_type', 'name', 'owner', 'quantity', 'start', 'time_of_day'];
             keys.forEach((key) => {
                 newState[key] = null;
             });

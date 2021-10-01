@@ -19,7 +19,6 @@ const User = () => {
                 const result = await signInWithPopup(auth, provider);
                 console.log({ result });
                 if (result && result.user) {
-                    const { email, uid } = result.user;
                     // setting up auth in context
                     dispatch_user({
                         type: r.user.act['loginWith-google'],
@@ -44,12 +43,9 @@ const User = () => {
     }, [dispatch_user]);
 
     // ACKNOWLEDGE USER in database once user logs in
-    // this is done once every refrest
     const acknowledgedUser = useCallback(async () => {
         // do not acknowledge user if already acknowledged
         // or if not logged in yet.
-
-        console.log('proceeding');
         const touchpoint = e.links.apis.aws + '/user/acknowledge';
 
         // PAYLOAD FOR ACKNOWLEDGING USER
@@ -66,7 +62,6 @@ const User = () => {
                 type: r.user.act.acknowledged,
                 payload: data.doc,
             });
-            // console.log(data);
         } else if (status === 400) {
             alert('Some data is missing so the request could not be accepted.');
         } else {

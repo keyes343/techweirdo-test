@@ -7,7 +7,6 @@ export type Med = {
     end: Date;
     time_of_day: 'Morning' | 'Afternoon' | 'Evening' | 'Night';
     meal: 'After' | 'Before';
-    gap: number;
     taken: string[];
     _id?: string;
     createdAt?: Date;

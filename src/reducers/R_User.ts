@@ -8,25 +8,15 @@ type Action = {
 };
 export enum act {
     'loginWith-google',
-    'loginWith-otp',
-    'inputting-phoneNumber',
     'acknowledged',
     'clear-acknowledged',
     'logout',
-    'last-uploaded',
-    'edit-myprofile',
 }
-
-// type User_keyss = {
-//     [k in keyof t.user.User]: string | null;
-// };
 
 type KEY = keyof t.user.User;
 type User_keys = Record<KEY, t.user.User[KEY]>;
-// type MyProfile = Record<keyof t.user.MyProfile, string | null>;
 
 export interface State extends User_keys {
-    // user_id: string | null;
     loggedIn: boolean;
     acknowledged: boolean; // true if user now exists in mongoose database
     mongoose_id: string | null;
@@ -44,13 +34,6 @@ export const initialState: State = {
 export const reducer = (state: State, action: Action) => {
     const newState = { ...state };
     const { payload, type } = action;
-    const payload_checker = () => {
-        // when a payload is must
-        if (!payload) {
-            alert('Payload is empty. This should not happen');
-            return newState;
-        }
-    };
     const firebase_result = payload as User;
     switch (type) {
         case act['loginWith-google']: // when user selects a subcategory ( new, same, both )
@@ -61,7 +44,6 @@ export const reducer = (state: State, action: Action) => {
                 newState.loggedIn = firebase_result.uid ? true : false;
             }
             break;
-
         case act.logout:
             newState.loggedIn = false;
             newState.email = null;

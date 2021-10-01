@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useContext, useCallback } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { r, e, t } from './incoming';
 import axios from 'axios';
 
@@ -49,10 +49,16 @@ const Med = () => {
             set_spinner(true);
             console.log({ selectedDate });
             try {
+                const d_ = selectedDate;
+                const date_ = d_.getDate();
+                const month = d_.getMonth();
+                const year = d_.getFullYear();
+                const date_text = `${date_}/${month}/${year}`;
+
                 const api = `${e.links.apis.aws}/med/toggle_taken`;
                 const payload = {
                     _id,
-                    date: selectedDate,
+                    date_text,
                 };
                 const { data, status } = await axios.post(api, payload);
                 if (status === 200) {

@@ -51,7 +51,6 @@ export const ArrayWrapper = styled(Grid)`
             }
         }
     }
-    border: 2px solid blue;
 `;
 export const CardArray = styled(Grid)`
     gap: 1rem;
